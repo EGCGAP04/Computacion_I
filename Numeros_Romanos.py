@@ -49,15 +49,24 @@ while entrada not in ["fin", "'fin'", "'fin", "fin'"]:
                     j = 1
 
         if caracter_invalido == 0:
-            caracteres = [valores_romanos[i] for i in caracteres]
+            valores = [valores_romanos[i] for i in caracteres]
+            resultado = 0
+            j = 0
+
+            for i in valores:
+                if i > j:
+                    resultado += i - 2 * j
+                else:
+                    resultado += i
+                j = i
 
         if caracter_invalido == 1:
-            print("No ha ingresado un número romano válido.")
+            print("Error de Caracteres: No ha ingresado un número romano válido.")
         elif caracter_invalido == 2:
-            print("Solo I, X y C pueden restarse.")
+            print("Error de Resta: I puede restarse de V y X; X puede restarse de L y C; y C puede restarse de D y M. Las demas restas no son válidas")
         elif caracter_invalido == 3:
-            print("I, X, C y M solo se pueden repetir hasta tres veces y V, L y D no pueden repetirse.")
+            print("Error de Repetición: I, X, C y M solo se pueden repetir hasta tres veces y V, L y D no pueden repetirse.")
         else:
-            print(caracteres)
+            print(f"El número romano ingresado es equivalente a: {resultado}.")
 
 print("Fin del programa.")
