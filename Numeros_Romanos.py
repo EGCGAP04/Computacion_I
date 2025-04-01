@@ -9,6 +9,8 @@ print("Escriba 'Fin' para finalizar el programa.")
 
 entrada = ""
 caracteres = []
+valores_romanos = {"i": 1, "v": 5, "x": 10, "l": 50, "c": 100, "d": 500, "m": 1000, " ": 0}
+permitidos_restar = ["i", "x", "c"]
 
 while entrada not in ["fin", "'fin'", "'fin", "fin'"]:
     caracteres.clear()
@@ -17,30 +19,30 @@ while entrada not in ["fin", "'fin'", "'fin", "fin'"]:
     entrada = input("Ingresa un número romano: ").strip().lower()
 
     if entrada not in ["fin", "'fin'", "'fin", "fin'"]:
-        for i in entrada:
-            caracteres.append(i)
+        caracteres = list(entrada)
 
-        for i in range(len(caracteres)):
-            if caracteres[i] not in ["i", "v", "x", "l", "c", "d", "m"]:
+        for i in caracteres:
+            if i not in valores_romanos:
                 caracter_invalido = 1
-            else:
-                if caracteres[i] == "i":
-                    caracteres[i] = 1
-                elif caracteres[i] == "v":
-                    caracteres[i] = 5
-                elif caracteres[i] == "x":
-                    caracteres[i] = 10
-                elif caracteres[i] == "l":
-                    caracteres[i] = 50
-                elif caracteres[i] == "c":
-                    caracteres[i] = 100
-                elif caracteres[i] == "d":
-                    caracteres[i] = 500
-                elif caracteres[i] == "m":
-                    caracteres[i] = 1000
+                break
+
+        if caracter_invalido == 0:
+            for i in range(len(caracteres) - 1):
+                j0 = caracteres[i]
+                j1 = caracteres[i + 1]
+
+                if valores_romanos[j0] < valores_romanos[j1]:
+                    if j0 not in permitidos_restar:
+                        caracter_invalido = 2
+                        break
+
+        if caracter_invalido == 0:
+            caracteres = [valores_romanos[c] for c in caracteres]
 
         if caracter_invalido == 1:
-            print("No ha ingresado un número romano.")
+            print("No ha ingresado un número romano válido.")
+        elif caracter_invalido == 2:
+            print("Error: Solo I, X y C pueden restarse.")
         else:
             print(caracteres)
 
