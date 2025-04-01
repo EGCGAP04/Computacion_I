@@ -10,7 +10,7 @@ print("Escriba 'Fin' para finalizar el programa.")
 entrada = ""
 caracteres = []
 valores_romanos = {"i": 1, "v": 5, "x": 10, "l": 50, "c": 100, "d": 500, "m": 1000}
-permitidos_restar = ["i", "x", "c"]
+permitidos_restar = {"i": ["v", "x"], "x": ["l", "c"], "c": ["d", "m"]}
 no_repetibles = ["v", "l", "d"]
 
 while entrada not in ["fin", "'fin'", "'fin", "fin'"]:
@@ -29,11 +29,9 @@ while entrada not in ["fin", "'fin'", "'fin", "fin'"]:
 
         if caracter_invalido == 0:
             for i in range(len(caracteres) - 1):
-                j0 = caracteres[i]
-                j1 = caracteres[i + 1]
-
+                j0, j1 = caracteres[i], caracteres[i + 1]
                 if valores_romanos[j0] < valores_romanos[j1]:
-                    if j0 not in permitidos_restar or j1 in no_repetibles:
+                    if j0 not in permitidos_restar or j1 not in permitidos_restar[j0]:
                         caracter_invalido = 2
                         break
 
@@ -51,19 +49,17 @@ while entrada not in ["fin", "'fin'", "'fin", "fin'"]:
         if caracter_invalido == 0:
             valores = [valores_romanos[i] for i in caracteres]
             resultado = 0
-            j = 0
 
-            for i in valores:
-                if i > j:
-                    resultado += i - 2 * j
+            for i in range(len(valores)):
+                if i < len(valores) - 1 and valores[i] < valores[i + 1]:  # Si el valor actual es menor que el siguiente, se resta
+                    resultado -= valores[i]
                 else:
-                    resultado += i
-                j = i
+                    resultado += valores[i]
 
         if caracter_invalido == 1:
             print("Error de Caracteres: No ha ingresado un número romano válido.")
         elif caracter_invalido == 2:
-            print("Error de Resta: I puede restarse de V y X; X puede restarse de L y C; y C puede restarse de D y M. Las demas restas no son válidas")
+            print("Error de Resta: I puede restarse de V y X; X puede restarse de L y C; y C puede restarse de D y M. Las demas restas no son válidas.")
         elif caracter_invalido == 3:
             print("Error de Repetición: I, X, C y M solo se pueden repetir hasta tres veces y V, L y D no pueden repetirse.")
         else:
